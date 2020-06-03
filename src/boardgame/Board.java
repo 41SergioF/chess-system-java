@@ -29,12 +29,12 @@ public class Board {
 	
 	public Piece piece(int row, int column) { //retorna a peça pela linha e coluna]
 		if (!positionExists(row, column)) {
-			throw new BoardException("Position inn't on the board");
+			throw new BoardException("Position isn't on the board");
 		}
 		return pieces[row][column];
 	}
 	
-	public Piece piece(Position position) {	//retorna a peça pela posição
+	public Piece piece(Position position) {	//retorna a peça da matrix do tabulelo pela posição
 		if (!positionExists(position)) {
 			throw new BoardException("Position isn't on the board");
 		}
@@ -47,6 +47,19 @@ public class Board {
 		}
 		pieces[position.getRow()][position.getColumn()] = piece;
 		piece.position = position;//ela prcisa saber que não é mais nula 
+	}
+	
+	public Piece removePiece(Position position) {	///faz a remoção de uma peça retornado nulo 
+		if (!positionExists(position)) {//confere a existencia da posição no tabulero . caso 
+			throw new BoardException("Position isn't on the board");//caso a peça não exista, será declaradeo uma exeção
+		}
+		if (piece(position) == null) { //confere se tem um a peça nessa posição 
+			return null; // retorna uma posição de peça e declara como nula 
+		}
+		Piece aux = piece(position);//cria uma aux para apontar para peça 
+		aux.position = null;//declara que a posição dessa nela é nulo 
+		pieces[position.getRow()][position.getColumn()] = null;//delara que nessa posição na matrix não a peça 
+		return aux;//retorna a peça
 	}
 	
     private boolean positionExists(int row, int column) {
