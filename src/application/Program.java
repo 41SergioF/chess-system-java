@@ -4,10 +4,12 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import boardgame.BoardException;
+import boardgame.Position;
 import chess.ChessException;
 import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.ChessPosition;
+import chess.pieces.Rook;
 
 public class Program {
 
@@ -18,6 +20,7 @@ public class Program {
 		
 		while(true) {
 			try {
+								
 				UI.printBoard(chessMatch.getPieces());
 				System.out.println();
 				System.out.print("Source: ");
@@ -26,6 +29,7 @@ public class Program {
 				System.out.print("Target: ");
 				ChessPosition target = UI.readChessPosition(scan);
 				
+							
 				ChessPiece capturedPiece = chessMatch.perfomaChessMove(source, target);
 				UI.clearScreen();
 			}
