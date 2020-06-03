@@ -21,10 +21,14 @@ public class Program {
 		while(true) {
 			try {
 								
-				UI.printBoard(chessMatch.getPieces());
+				UI.printBoard(chessMatch.getPieces()); //sem o boolean do backgroude
 				System.out.println();
 				System.out.print("Source: ");
 				ChessPosition source = UI.readChessPosition(scan);
+				
+				boolean[][] possibleMoves = chessMatch.possibleMoves(source);
+				UI.clearScreen();
+				UI.printBoard(chessMatch.getPieces(), possibleMoves); //com boolean do backgraoud
 				
 				System.out.print("Target: ");
 				ChessPosition target = UI.readChessPosition(scan);
@@ -45,6 +49,7 @@ public class Program {
 				System.out.println(e.getMessage());
 				scan.nextLine();
 			}
+			System.out.println(UI.ANSI_BLUE_BACKGROUND+UI.ANSI_YELLOW +"5"+UI.ANSI_RESET);
 		}
 		
 		//scan.close();
