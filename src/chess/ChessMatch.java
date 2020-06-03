@@ -25,27 +25,30 @@ public class ChessMatch {
 		return matPieces;
 	}
 	
-	public ChessPiece perfomaChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
-		Position source = sourcePosition.toPosition();
-		Position target = targetPosition.toPosition();
-		validateSourcePosition(source);
-		Piece capturedPiece = makeMove(source, target);
+	public ChessPiece perfomaChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {//move as peças recebendo as posições de xadrez
+		Position source = sourcePosition.toPosition(); //chama o método para converção  
+		Position target = targetPosition.toPosition(); //de posição de xadrez para posição de matriz  
+		validateSourcePosition(source); //valida a exixtencia da peça na matriz (caso contrario exception)
+		Piece capturedPiece = makeMove(source, target); //move a peça na matriz  recemeno a peça cabiturada 
 		
-		return (ChessPiece)capturedPiece;
+		return (ChessPiece)capturedPiece; //faz um downcasting e retorna a peça 
 	}
 	
-	public Piece makeMove(Position source, Position target) {
-		Piece pMove = board.removePiece(source);
-		Piece capturedPiece = board.removePiece(target);
-		board.placePiece(pMove, target);
+	public Piece makeMove(Position source, Position target) { //move as peças no tabulero. trabalhando com as posições de matriz
+		Piece pMove = board.removePiece(source); //retira a peça que está na origem 
+		Piece capturedPiece = board.removePiece(target); //retira as peças que está no destino
+		board.placePiece(pMove, target); //coloca a peça de origem no destino 
 		
-		return capturedPiece;
+		return capturedPiece; //retorna a peça capturada 
 	}
-	
+	 
 	private void validateSourcePosition(Position position) {
 		if (!board.thereIsAPiece(position)) {//teste se tem um a peça nessa posição (entra no if endo false) 
 			throw new ChessException("There is no piece on source position");
 		}
+		if (!board.piece(position).isThereAnyPossibleMove()) {
+			throw new ChessException("There's no possible moves for the chosen piece");
+		}	
 	}
 	
 	private void placeNewPiece(char coolumn, int row, ChessPiece piece) {

@@ -20,7 +20,7 @@ public class ChessPosition {
 	}
 
 	public int getRow() {
-		return row;
+		return row; 
 	}
 
 	protected Position toPosition() {
