@@ -1,6 +1,5 @@
 package chess.pieces;
 
-import application.UI;
 import boardgame.Board;
 import boardgame.Position;
 import chess.ChessPiece;
