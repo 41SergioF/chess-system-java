@@ -21,7 +21,7 @@ public class Program {
 		while(true) {
 			try {
 								
-				UI.printBoard(chessMatch.getPieces()); //sem o boolean do backgroude
+				UI.printMatch(chessMatch);
 				System.out.println();
 				System.out.print("Source: ");
 				ChessPosition source = UI.readChessPosition(scan);
