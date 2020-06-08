@@ -110,9 +110,13 @@ public class UI {
 		System.out.println("Waiting player: " + match.getCurrentPlayer());
 		System.out.println();
 		printCapturePieces(capturedPiece);
-		
-		if (match.getCheck()) {
-			System.out.println("CHECK!");
+		if (!match.getCheckMate()) {
+			if (match.getCheck()) {
+				System.out.println("CHECK!");
+			}
+		}else {
+			System.out.println("CHECKMATE!");
+			System.out.println("Winner: "+match.getCurrentPlayer());
 		}
 	}
 	

@@ -19,7 +19,7 @@ public class Program {
 		Scanner scan = new Scanner(System.in);
 		List<ChessPiece> captured = new ArrayList<ChessPiece>();
 		 
-		while(true) {
+		while(!chessMatch.getCheckMate()) {
 			try {
 								
 				UI.printMatch(chessMatch, captured);
@@ -52,11 +52,12 @@ public class Program {
 			catch (BoardException e) {
 				System.out.println(e.getMessage());
 				scan.nextLine();
-			}
+			} 
 			System.out.println(UI.ANSI_BLUE_BACKGROUND+UI.ANSI_YELLOW +"5"+UI.ANSI_RESET);
 		}
-		
-		//scan.close();
+		UI.clearScreen();
+		UI.printMatch(chessMatch, captured);
+		scan.close();
 	}
  
 }
