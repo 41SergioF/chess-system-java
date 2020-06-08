@@ -83,7 +83,8 @@ public class ChessMatch {
 	}
 	
 	public Piece makeMove(Position source, Position target) { //move as peças no tabulero. trabalhando com as posições de matriz
-		Piece pMove = board.removePiece(source); //retira a peça que está na origem 
+		ChessPiece pMove = (ChessPiece)board.removePiece(source); //retira a peça que está na origem 
+		pMove.increaseMoveCount();
 		Piece capturedPiece = board.removePiece(target); //retira as peças que está no destino
 		board.placePiece(pMove, target); //coloca a peça de origem no destino 
 		if (capturedPiece != null) {
@@ -95,8 +96,9 @@ public class ChessMatch {
 	}
 	
 	public void undoMove(Position source, Position target, Piece captured) {//ira desfazer o movimento feito 
-		Piece piece = board.removePiece(target);//pega a peça colocada na posição de destino 
+		ChessPiece piece = (ChessPiece)board.removePiece(target);//pega a peça colocada na posição de destino 
 		board.placePiece(piece, source); //desolve a peça para posição de origem
+		piece.decreasementMoveCount();
 		
 		if (captured != null) {//se uma peça foi capiturada no movimento 
 			board.placePiece(captured, target); //colocamos a peça o lugar de volta 
