@@ -1,5 +1,7 @@
 package chess;
 
+import java.beans.beancontext.BeanContext;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +26,7 @@ public class ChessMatch {
 	private boolean check; //informa se a partida está em check
 	private boolean checkMate;
 	private ChessPiece enPassantVulnerable;
+	private ChessPiece promoted;
 	
 	
 	public ChessMatch() {
@@ -51,6 +54,11 @@ public class ChessMatch {
 	public ChessPiece getEnPassantVulnerable() {
 		return enPassantVulnerable;
 	}
+	
+	public ChessPiece getPromoted() {
+		return promoted;
+	}
+	
 	//é preciso fazer um downcastin em todas a peças antes 
 	public ChessPiece[][] getPieces(){
 		ChessPiece[][] matPieces = new ChessPiece[board.getRows()][board.getColumns()];
@@ -68,6 +76,33 @@ public class ChessMatch {
 		return board.piece(position).possibleMoves();
 	}
 	
+	public ChessPiece ReplacePromotedPiece(String type) {
+		if (promoted == null) {
+			throw new IllegalStateException("There's no piece to BeanContext promoted");
+		}
+		
+		if (!type.equals("B") && !type.equals("Q") && !type.equals("R") && !type.equals("N")) {
+			throw new InvalidParameterException("Invalid type for promotion");
+		}
+		
+		Position position = promoted.getChessPosition().toPosition();//pegar a posiçao do promoute
+		Piece piece = board.removePiece(position);
+		piecesOnTheBoard.remove(position);
+		
+		ChessPiece newChessPiece = newPiece(type, promoted.getColor());
+		board.placePiece(newChessPiece, position);//colocar no tabuleiro
+		piecesOnTheBoard.add(newChessPiece);//adicionar na lista 
+		
+		return newChessPiece;
+	}
+	
+	private ChessPiece newPiece(String type, Color color) {
+		if (type.equals("B")) return new Bishop(board, color);
+		if (type.equals("N")) return new Knight(board, color);
+		if (type.equals("R")) return new Rook(board, color);
+		return new Queen(board, color);
+	}
+	
 	public ChessPiece perfomaChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {//move as peças recebendo as posições de xadrez
 		Position source = sourcePosition.toPosition(); //chama o método para converção  
 		Position target = targetPosition.toPosition(); //de posição de xadrez para posição de matriz  
@@ -83,6 +118,15 @@ public class ChessMatch {
 		}
 		//se o opponete de jogador atual estiver em check, a parteda está em check 
 		ChessPiece movedPiece = (ChessPiece)board.piece(target);
+		
+		promoted = null;
+		if (movedPiece instanceof Pawn) {///se apeça que foi movida for uma pião 
+			if ((movedPiece.getColor() == Color.WHITE && target.getRow() == 0) || 
+					(movedPiece.getColor() == Color.BLACK && target.getRow() == 7)) {
+				promoted = (ChessPiece)board.piece(target);//pega a peça que será promovida 
+				promoted = ReplacePromotedPiece("Q");
+			}
+		}
 		
 		check = (testCheck(opponent(currentPlayer))) ? true : false;
 		if (testCheckMate(opponent(currentPlayer)))
